@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,8 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.boot.forecast.model.WeatherAverageDTO;
 import com.boot.forecast.service.ForecastService;
 
-//@ExtendWith(SpringExtension.class)
-//@SpringBootTest
 @WebMvcTest(ForecastController.class)
 class ForecastControllerTest {
 
@@ -36,6 +36,8 @@ class ForecastControllerTest {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testWeatherForecastAverage() throws Exception {
 
+		Map<String, Object> resultMap = new HashMap<>();
+
 		var result = new ArrayList<WeatherAverageDTO>();
 		WeatherAverageDTO obj1 = new WeatherAverageDTO();
 		WeatherAverageDTO obj2 = new WeatherAverageDTO();
@@ -45,7 +47,10 @@ class ForecastControllerTest {
 		result.add(obj2);
 		result.add(obj3);
 
-		ResponseEntity testData = new ResponseEntity<>(result, HttpStatus.OK);
+		resultMap.put("WeatherAverage", result);
+		resultMap.put("WeatherMessage", "Testing");
+
+		ResponseEntity testData = new ResponseEntity<>(resultMap, HttpStatus.OK);
 		Mockito.when(forecastService.weatherForecastAverage(Mockito.anyString())).thenReturn(testData);
 		mockMvc.perform(get("/forecast").param("city", "Bengaluru")).andExpect(status().isOk());
 	}
