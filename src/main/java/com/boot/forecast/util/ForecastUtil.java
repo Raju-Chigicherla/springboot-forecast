@@ -26,7 +26,7 @@ public class ForecastUtil {
 	 * Average of the Weather - Temperature & Wind
 	 *
 	 * @param list the list of {@link WeatherMapTimeDTO}
-	 * @return the weather average DTO
+	 * @return the weather average DTO {@link WeatherAverageDTO}
 	 */
 	public static WeatherAverageDTO average(List<WeatherMapTimeDTO> list) {
 		var result = new WeatherAverageDTO();
