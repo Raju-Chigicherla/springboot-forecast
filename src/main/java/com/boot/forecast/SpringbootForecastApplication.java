@@ -7,8 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
-import com.boot.forecast.filter.model.PathDetails;
 import com.boot.forecast.filter.model.CustomUser;
+import com.boot.forecast.filter.model.PathDetails;
 import com.boot.forecast.filter.repository.PathDetailsRepository;
 import com.boot.forecast.filter.repository.CustomUserRepository;
 
@@ -19,10 +19,10 @@ import com.boot.forecast.filter.repository.CustomUserRepository;
 public class SpringbootForecastApplication {
 	
 	@Autowired
-	private CustomUserRepository userRepository;
-
-	@Autowired
 	private PathDetailsRepository pathDetailsRepository;
+	
+	@Autowired
+	private CustomUserRepository userRepository;
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {

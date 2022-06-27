@@ -2,6 +2,7 @@ package com.boot.forecast.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
+
+import com.boot.forecast.filter.RateLimiter;
 
 /**
  * The Class ForecastConfig.
@@ -30,6 +34,9 @@ public class ForecastConfig {
 			"/swagger-resources/configuration/ui", "/swagger-resources", "/h2-console", "/h2-console/**",
 			"/swagger-resources/configuration/security", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**",
 			"/configuration/**", "/swagger*/**", "/health-check", "/actuator/**", "/login", "/sign-up" };
+
+	@Autowired
+	private RateLimiter rateLimiter;
 
 	/**
 	 * Rest template.
@@ -49,7 +56,7 @@ public class ForecastConfig {
 				.authorizeHttpRequests(
 						(authz) -> authz.antMatchers(SWAGGER_WHITELIST).permitAll().anyRequest().authenticated())
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//				.addFilterAfter(rateLimiter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterAfter(rateLimiter, UsernamePasswordAuthenticationFilter.class)
 				.httpBasic(Customizer.withDefaults());
 		return http.build();
 	}
